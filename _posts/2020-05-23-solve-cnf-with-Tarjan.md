@@ -8,6 +8,7 @@ tags:
   - immutability
   - collection
   - performance
+classes: wide
 ---
 
 Today I want to describe my journey of writing a purely functional implementation for solving 2-satisfiability problem.
