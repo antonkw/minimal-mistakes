@@ -1,11 +1,5 @@
 ---
 layout: archive
-header:
-  overlay_color: "#5e616c"
-  overlay_image: /assets/images/_MG_2222_1.jpg
-  actions:
-    - label: "<i class='fas fa-download'></i> Install now"
-      url: "/docs/quick-start-guide/"
 
 ---
 
@@ -19,7 +13,6 @@ header:
   {% assign posts = site.posts %}
 {% endif %}
 
-{% include archive-single.html 
 {% assign entries_layout = page.entries_layout | default: 'list' %}
 <div class="entries-{{ entries_layout }}">
   {% for post in posts %}
