@@ -9,11 +9,10 @@ classes: wide
 
 In that post we will check out the beginning of "herding cats" series by eed3si9n.
 
-
 ### Eq
 [eed3si9n.com/herding-cats/Eq](https://eed3si9n.com/herding-cats/Eq.html)
 
-Nothing special here, just noticed that anonymous `given` works well. With Scala 3 we can finally omit names like:
+Nothing special here, just can notice that anonymous `given` works well. With Scala 3 we can finally omit names like:
 ```scala
 given Eq[IdCard] with {
   def eqv(a: IdCard, b: IdCard): Boolean = ???
@@ -21,7 +20,7 @@ given Eq[IdCard] with {
 ```
 No need to write `given idCardEq: Eq[IdCard]` with clear understanding that `idCardEq` won't be used directly.
 
-Finally, it's always quite tempting to put Eq into companion object:
+Finally, it's always quite tempting to put *Eq* into companion object:
 ```scala
 case class IdCard(firstName: String, secondName: String)
 
@@ -39,7 +38,7 @@ Eugene didn't pay much attention to that type class on the page [PartialOrder.ht
 
 [Pos.html](https://eed3si9n.com/herding-cats/Pos.html) page about partially ordered sets doesn't bring much information too.
 
-I recommend taking a look at least at wiki page: [wiki/Partially_ordered_set](https://en.wikipedia.org/wiki/Partially_ordered_set)
+I recommend to take a look at least at wiki page: [wiki/Partially_ordered_set](https://en.wikipedia.org/wiki/Partially_ordered_set)
 
 PartialOrder is all about notion of partial ordered sets.
 
@@ -48,35 +47,82 @@ PartialOrder is all about notion of partial ordered sets.
 
 That's quite interesting how different ideas of greatest and maximal elements.
 
-Naive implementation are:
+Naive implementations are:
 ```scala
-def greatest[A](set: Set[A])(using partialOrdering: PartialOrder[A]): Option[A] = 
-  set.find(elem => set.forall(partialOrdering.tryCompare(_, elem).exists(_ <= 0)))
+def greatest[A](
+  set: Set[A]
+)(
+  using partialOrdering: PartialOrder[A]
+): Option[A] = 
+  set.find(
+    elem => set.forall(
+      partialOrdering
+        .tryCompare(_, elem)
+        .exists(_ <= 0)
+    )
+  )
 
-def maximals[A](set: Set[A])(using partialOrdering: PartialOrder[A]): Set[A] =
-  set.filter(elem => set.forall(partialOrdering.tryCompare(_, elem).map(_ <= 0).getOrElse(true)))
+def maximals[A](
+  set: Set[A]
+)(
+  using partialOrdering: PartialOrder[A]
+): Set[A] =
+  set.filter(
+    elem => set.forall(
+      partialOrdering
+      .tryCompare(_, elem)
+      .map(_ <= 0)
+      .getOrElse(true)
+    )
+  )
 
-def least[A](set: Set[A])(using partialOrdering: PartialOrder[A]): Option[A] =
-  set.find(elem => set.forall(partialOrdering.tryCompare(_, elem).exists(_ >= 0)))
+def least[A](
+  set: Set[A]
+)(
+  using partialOrdering: PartialOrder[A]
+): Option[A] =
+  set.find(
+    elem => set.forall(
+      partialOrdering
+        .tryCompare(_, elem)
+        .exists(_ >= 0)
+    )
+  )
 
 def minimals[A](set: Set[A])(using partialOrdering: PartialOrder[A]): Set[A] =
-  set.filter(elem => set.forall(partialOrdering.tryCompare(_, elem).map(_ <= 0).getOrElse(true)))
+  set.filter(
+    elem => set.forall(
+      partialOrdering
+        .tryCompare(_, elem)
+        .map(_ <= 0)
+        .getOrElse(true)
+    )
+  )
 ```
 
-I also combined values to case class.
+I also combined values to case class. So we'll have all properties at one place.
 ```scala
-case class PosetDescription[A](greatest: Option[A], least: Option[A], minimals: Set[A], maximals: Set[A])
+case class PosetDescription[A](
+  greatest: Option[A], 
+  least: Option[A], 
+  minimals: Set[A], 
+  maximals: Set[A]
+)
 ```
 
 [PartialOrder example](src/main/scala/io/github/antonkw/2_partial.worksheet.sc)
 
 It seemed that it is easy to abstract out sets itself to write something like:
 ```scala
-def make[F[_]: Foldable, A](poset: F[A])(using partialOrdering: PartialOrder[A]) = PosetDescription(
+def make[F[_]: Foldable, A](
+  poset: F[A]
+)(
+  using partialOrdering: PartialOrder[A]
+) = PosetDescription(
   greatest = poset.find(el => poset.forall(_.tryCompare(el).exists(_ <= 0)))
 ...
 ```
-In fact, we're interested in the properties of set itself instead of just provided API.
+In fact, we're interested in the properties of set itself instead of *just* provided API.
 
 There is also interesting idea of bounds.
 For a subset *A* of *P*, an element *x* in *P* is an upper bound of *A* if *a* ≤ *x*, for each element *a* in *A*. In particular, ***x* need not be in *A*** to be an upper bound of *A*. Similarly, an element *x* in *P* is a lower bound of *A* if *a* ≥ *x*, for each element *a* in *A*. A greatest element of *P* is an upper bound of *P* itself, and *a* least element is a lower bound of *P*.
