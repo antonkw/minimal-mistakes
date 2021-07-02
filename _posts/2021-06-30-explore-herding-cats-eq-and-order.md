@@ -7,6 +7,8 @@ tags:
 classes: wide
 ---
 
+//fix links
+
 In that post we will check out the beginning of "herding cats" series by eed3si9n.
 
 ### Eq
@@ -27,7 +29,7 @@ case class IdCard(firstName: String, secondName: String)
 object IdCard:
   given Eq[IdCard] = Eq.fromUniversalEquals
 ```
-[Eq example](src/main/scala/io/github/antonkw/1_eq.worksheet.sc)
+[Eq example](https://github.com/antonkw/explore-herding-cats/blob/main/src/main/scala/io/github/antonkw/1_eq.worksheet.sc)
 
 ### PartialOrder
 ```scala
@@ -110,7 +112,7 @@ case class PosetDescription[A](
 )
 ```
 
-[PartialOrder example](src/main/scala/io/github/antonkw/2_partial.worksheet.sc)
+[PartialOrder example](https://github.com/antonkw/explore-herding-cats/blob/main/src/main/scala/io/github/antonkw/2_partial.worksheet.sc)
 
 It seemed that it is easy to abstract out sets itself to write something like:
 ```scala
@@ -155,4 +157,4 @@ given Order[IdCard] = Order.from((id1, id2) => {
 })
 ```
 
-[Order example](src/main/scala/io/github/antonkw/3_order.worksheet.sc)
+[Order example](https://github.com/antonkw/explore-herding-cats/blob/main/src/main/scala/io/github/antonkw/3_order.worksheet.sc)
