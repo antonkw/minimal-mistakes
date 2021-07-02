@@ -1,21 +1,18 @@
 ---
 title: "Explore \"herding cats\": Eq, Order, and why greatest element of set is not equal to maximal"
 permalink: /cats/eq-order/
+header:
+  image: /assets/images/_MG_2222_1.jpg
 excerpt: "Explore Cats Eq, Partial Order, Order typeclasses"
 categories:
   - cats
 tags:
   - scala
 classes: wide
-header:
-  overlay_color: "#5e616c"
-  image: /assets/images/_MG_2222_1.jpg
 
 # toc: true
 # toc_label: "My Table of Contents"
 # toc_icon: "cog"
-header:
-  teaser: https://content.onliner.by/widget/news/1x1/57763665a6cfb6c8df49d12994824458.jpeg
 ---
 
 In that post we will check out the beginning of "herding cats" series by eed3si9n.
