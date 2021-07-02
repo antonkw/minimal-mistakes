@@ -1,13 +1,11 @@
 ---
-title: "Explore \"herding cats\": Eq and Order"
+title: "Explore \"herding cats\": Eq, Order, and why greatest element of set is not equal to maximal"
 categories:
   - cats
 tags:
   - scala
 classes: wide
 ---
-
-//fix links
 
 In that post we will check out the beginning of "herding cats" series by eed3si9n.
 
