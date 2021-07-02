@@ -2,7 +2,7 @@
 title: "Explore \"herding cats\": Eq, Order, and why greatest element of set is not equal to maximal"
 permalink: /cats/eq-order/
 header:
-  image: /assets/images/_MG_2222_1.jpg
+  image: /assets/images/birds.jpg
 excerpt: "Explore Cats Eq, Partial Order, Order typeclasses"
 categories:
   - cats
