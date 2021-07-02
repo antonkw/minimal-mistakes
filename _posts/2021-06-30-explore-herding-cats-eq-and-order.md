@@ -6,11 +6,14 @@ categories:
   - cats
 tags:
   - scala
-# classes: wide
+classes: wide
+header:
+  overlay_color: "#5e616c"
+  image: /assets/images/_MG_2222_1.jpg
 
-toc: true
-toc_label: "My Table of Contents"
-toc_icon: "cog"
+# toc: true
+# toc_label: "My Table of Contents"
+# toc_icon: "cog"
 header:
   teaser: https://content.onliner.by/widget/news/1x1/57763665a6cfb6c8df49d12994824458.jpeg
 ---
