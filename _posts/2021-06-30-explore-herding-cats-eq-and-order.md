@@ -1,9 +1,9 @@
 ---
-title: "Explore \"herding cats\": Eq, Order, and why greatest element of set is not equal to maximal"
+title: "Explore \"herding cats\": Eq and Order"
 permalink: /cats/eq-order/
 header:
   image: /assets/images/birds.jpg
-excerpt: "Explore Cats Eq, Partial Order, Order typeclasses"
+excerpt: "Explore Cats Eq, Partial Order, Order typeclasses. Answering the question why greatest element of set is not equal to maximal."
 categories:
   - cats
 tags:
