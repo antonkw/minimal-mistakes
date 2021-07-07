@@ -3,7 +3,7 @@ title: "Explore \"herding cats\": writer"
 permalink: /cats/writer/
 header:
   image: /assets/images/writerjpg.jpg
-excerpt: "Explore Cats Writer monad"
+excerpt: "Explore Cats Writer. Monad to bring description with any computation unit."
 categories:
   - cats
 tags:
@@ -15,7 +15,7 @@ classes: wide
 # toc_icon: "cog"
 ---
 
-In that post we will check out the beginning of "herding cats" series by eed3si9n.
+In that post we will check out [Writer](https://eed3si9n.com/herding-cats/Writer.html]) of "herding cats" series by eed3si9n.
 
 
 ### Writer
@@ -53,7 +53,7 @@ type Writer[L, V] = WriterT[Id, L, V]
 
 ##### Run
 
-We have `run` that triggers execution and "unpack" `WriterT`.
+We have `run` that "unpack" `WriterT` into tuple.
 ```scala
 123.pure[Logged].run === (Vector(), 123)
 ```
@@ -64,3 +64,36 @@ We have `run` that triggers execution and "unpack" `WriterT`.
 ```
 Writer("example", 2).map(_ * 2).run === ("example", 4)
 ```
+
+##### Ap
+You can apply lifted function to your value with `ap`.
+
+```scala
+val multiplyByTwo: Writer[Vector[String], Int => Int] =
+  Writer(Vector("multiplied by two"), _ * 2)
+
+val (logs, value) = Writer(Vector("initial state"), 2).ap(multiplyByTwo).run
+
+logs === Vector("multiplied by two", "initial state")
+value === 4
+```
+
+#### Usage
+`Writer` is not something you can observe really often.
+
+Practical example is implementations of loggers for tests.
+
+```scala
+import org.typelevel.log4cats.extras.WriterLogger
+
+val logger = WriterLogger()
+logger.info("Hi, I'm message")
+
+val logged: WriterT[Id, List[LogMessage], Unit] = logger.info("Hi, I'm message")
+val message = logged.run._1.head
+
+message.level === Info
+message.message === "Hi, I'm message"
+```
+
+[valskalla/odin](https://github.com/valskalla/odin) logger also provides [WriterTLogger][https://github.com/valskalla/odin/blob/master/core/src/main/scala/io/odin/loggers/WriterTLogger.scala].
