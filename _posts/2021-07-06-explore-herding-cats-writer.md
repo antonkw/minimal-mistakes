@@ -1,5 +1,5 @@
 ---
-title: "Explore \"herding cats\": writer"
+title: "Explore \"herding cats\": Writer"
 permalink: /cats/writer/
 header:
   image: /assets/images/writerjpg.jpg
@@ -96,4 +96,4 @@ message.level === Info
 message.message === "Hi, I'm message"
 ```
 
-[valskalla/odin](https://github.com/valskalla/odin) logger also provides [WriterTLogger][https://github.com/valskalla/odin/blob/master/core/src/main/scala/io/odin/loggers/WriterTLogger.scala].
+[valskalla/odin](https://github.com/valskalla/odin) logger also provides [WriterTLogger](https://github.com/valskalla/odin/blob/master/core/src/main/scala/io/odin/loggers/WriterTLogger.scala).
