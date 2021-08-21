@@ -89,11 +89,12 @@ Apply[Option].map3(2.some, 2.some, 1.some)(_ + _ + _) === 5.some
 (1.some, 2.some).mapN { case (a, b) => a + b } === 3.some
 ```
 
-Under magic is multiplied by zero under the hood:
+Magic is multiplied by zero under the hood:
 ```scala
 private[syntax] final class Tuple3SemigroupalOps[F[_], A0, A1, A2](private val t3: Tuple3[F[A0], F[A1], F[A2]]) {
   def mapN[Z](f: (A0, A1, A2) => Z)(implicit functor: Functor[F], semigroupal: Semigroupal[F]): F[Z] = Semigroupal.map3(t3._1, t3._2, t3._3)(f)
 ```
+So, there are just dozens of implementations.
 
 [Apply examples](https://github.com/antonkw/explore-herding-cats/blob/main/src/main/scala/io/github/antonkw/5_apply.worksheet.sc)
 
