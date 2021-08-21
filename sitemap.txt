@@ -1,3 +1,5 @@
 https://antonkw.github.io/algorythms/solve-cnf-with-Tarjan/
 https://antonkw.github.io/cats/eq-order/
 https://antonkw.github.io/cats/writer/
+https://antonkw.github.io//cats/functor/
+https://antonkw.github.io/cats/apply/
