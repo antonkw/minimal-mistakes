@@ -98,4 +98,6 @@ message.message === "Hi, I'm message"
 
 [valskalla/odin](https://github.com/valskalla/odin) logger also provides [WriterTLogger](https://github.com/valskalla/odin/blob/master/core/src/main/scala/io/odin/loggers/WriterTLogger.scala).
 
-Note from SystemFw (Typelevel/cats Discord): "The problem with logging in writer is that you will need WriterT of IO, which will fail to log on error"
+
+Note from *SystemFw* (`Typelevel/cats` Discord): 
+> The problem with logging in writer is that you will need WriterT of IO, which will fail to log on error
