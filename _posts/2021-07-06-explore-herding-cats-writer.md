@@ -8,6 +8,10 @@ categories:
   - cats
 tags:
   - scala
+  - cats writer monad
+  - scala cats
+  - writer monad
+  - cats writer
 classes: wide
 
 # toc: true
