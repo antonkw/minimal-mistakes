@@ -3,11 +3,15 @@ title: "Explore \"herding cats\": Eq and Order"
 permalink: /cats/eq-order/
 header:
   image: /assets/images/birds.jpg
-excerpt: "Explore Cats Eq, Partial Order, Order typeclasses. Answering the question why greatest element of set is not equal to maximal."
+excerpt: "Explore Cats Eq, Partial Order, Order typeclasses. Notion of equality and why greatest element of set is not equal to maximal."
 categories:
   - cats
 tags:
   - scala
+  - cats eq
+  - cats order
+  - cats equality
+  - eq typeclass
 classes: wide
 
 # toc: true
