@@ -17,15 +17,24 @@ classes: wide
 
 ---
 
+### Agenda
 That post will be devoted to the notion of Reader monad and its simplest application.
 My original goal was just a careful exploration of dependency management in ZIO-way. `ZIO[R,E,O]` has an explicit Reader-channel (`R` stands for **R**eader) to declare necessary dependencies for any computation. That idea encourages me a lot. I love the inclination to explain all possible prerequisites and limitations for any piece of instructions.
+
 The first thing I need to confide in is that I underestimated Reader monad as an abstraction. Reader monad for me has always sounded like a "clever name for simple function with additional chaining options" and nothing more.
-Whilst I was going to jump into the comparison of Reader and class constructors and proceed with ZIO, I decided to re-iterate Reader motivation from scratch and move to real-like usage in the upcoming note.
+
+Whilst I was going to jump into the comparison of Reader and class constructors and proceed with ZIO, I decided to re-iterate Reader motivation from scratch and move to real-like usage in the upcoming notes.
+
 My journey started from [Reader datatype (by eed3si9n)](https://eed3si9n.com/herding-cats/Reader.html) which particlarly mentions the talk 
 [Rúnar Óli Bjarnason: Dead-Simple Dependency Injection](http://functionaltalks.org/2013/06/17/runar-oli-bjarnason-dead-simple-dependency-injection/).
 
 
 It simply brings the notion of passing dependencies with Reader monad and exposing Reader as API for application services. Eventually, that note became the text version of the talk. I hope my explicit comments could help to ascertain some non-obvious aspects.
+
+
+#### Example
+
+There is no application architecture at the moment. We just want to connect to database and do something with the data.
 
 #### table
 Let we have table with user-password combinations.
@@ -37,8 +46,8 @@ CREATE TABLE public.users (
 );
 ```
 
-#### initial function
-At the very first step we have function that initiates connection, updates password, and finally closes connection.
+#### connect and execute
+At the very first step we have function that initiates JDBC connection, updates password, and finally closes connection.
 ```scala
 def setPassword(user: String, hash: String) = {
   Class.forName("org.postgresql.Driver")
@@ -186,7 +195,7 @@ def changePassword(user: String, oldSecret: String, newSecret: String): DB[Boole
 ```
 
 #### Reader is just a function
-With that path, we can return to the statement about my confusion. I said I thought Reader is just a function. After a while, I was unconsciously correct. Some additions are required though.
+With that path, we can return to the statement about my confusion. I said I thought Reader is just a function. After a while, I was unconsciously correct. Some additions are required though. Even not addition but reversion; function is Reader.
 
 Cats treat functions as applicative functors.
 So we can try to return our definitions into single-argument functions:
