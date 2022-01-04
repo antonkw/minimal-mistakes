@@ -234,7 +234,8 @@ We can try it out.
 ```scala
 type Connection = String
 
-changePassword("user", "old hash", "new hash")("connection")
+val changePass: Connection => Boolean = changePassword("user", "old hash", "new hash")
+changePass("connection")
 
 //connection
 //connection
