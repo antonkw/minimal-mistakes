@@ -131,7 +131,7 @@ def setPassword(user: String, hash: String): Connection => Unit =
     statement.setString(1, hash)
     statement.setString(2, user)
     statement.executeUpdate()
-	  savePasswordChangeReport(user, hash).apply(connection) //really???
+    savePasswordChangeReport(user, hash).apply(connection) //really???
   }
 ```
 
