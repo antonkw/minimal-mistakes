@@ -41,11 +41,11 @@ The plan I have for the note is the following.
     1. Dependency rejection.
     2. Dependencies as function parameters.
     3. The notion of the context for a function.
-3. Tooling and approached. Reader and friends.
+3. Tooling and approaches. Reader and friends.
     1. Reader monad.
     2. Dependency as API detail.
     3. Making unique contexts is not simple.
-    4. ZIO ZLayers.
+    4. ZIO ZLayer.
     5. Monad transformers (ToFu).
 
 ## Dead patterns
@@ -57,7 +57,7 @@ The same flow of reasoning explains why there is no space for Guice today. Talks
 The cake pattern is not a matter of discussion too. [Cake antipattern (by kubuszok)](https://kubuszok.com/2018/cake-antipattern/)is an excellent note to get more argumentation.
 
 ## Pure ideas
-### Dependcy rejection
+### Dependency rejection
 Mark Seeman carefully [explained](https://blog.ploeh.dk/2017/02/02/dependency-rejection/) the principle itself.
 It is slightly out of topic since the notion doesn't help organize dependencies. It just prompts us to get rid of dependencies. Notwithstanding, the idea recalls the importance of keeping any side effects as close to the edge as possible.
 What does that mean?
