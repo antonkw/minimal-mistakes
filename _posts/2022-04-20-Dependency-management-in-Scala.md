@@ -135,7 +135,7 @@ The vital question that we can pose for the next iteration. Can we use some shar
 
 ## Tooling
 #### Reader monad!
-Adam Warski in [[Reader & Constructor-based Dependency Injection - friend or foe?]] states:
+Adam Warski in [Reader & Constructor-based Dependency Injection - friend or foe?](https://softwaremill.com/reader-monad-constructor-dependency-injection-friend-or-foe/) states:
 > Reader Monad can be viewed as a basic way to **track effects** in our code, by explicitly stating that certain dependencies can be used down in the call chain.
 
 An important statement that I want to unfold.
