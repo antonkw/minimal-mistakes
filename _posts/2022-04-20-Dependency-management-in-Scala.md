@@ -81,8 +81,8 @@ object UserService:
   def register(repo: UserRepository, emailClient: EMailClient)(user: User): F[UserId] 
 ```
 That option is canonical FP. So we have just a function that does some manipulations with arguments and returns a result.
-Partial application and currying are helping to make re-usage more or less comfortable. 
-`val register: User => F[UserId] = UserService.register(userRepository, emailClient)
+Partial application and currying are helping to make re-usage more or less comfortable: 
+`val register: User => F[UserId] = UserService.register(userRepository, emailClient)`
 The major drawback is obvious. Anybody who wants to call the function still ought to manage dependencies and pass them to every function. 
 
 ##### implicit arguments
