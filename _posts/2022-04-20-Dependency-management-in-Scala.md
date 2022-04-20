@@ -5,21 +5,21 @@ permalink: /applications/architecture/
 #   image: /assets/images/writerjpg.jpg
 excerpt: "Application dependency management in Scala: DI, ZIO and Monad Transformers"
 categories:
-- applications
-  tags:
-- scala
-- scala cats
-- cats reader
-- scala reader
-- reader monad
-- cats mtl
-- scala tofu
-- scala architecture
-- scala monad transformers
-- scala applications architecture
-- scala app architecture
-- functional programming
-  classes: wide
+  - applications
+tags:
+  - scala
+  - scala cats
+  - cats reader
+  - scala reader
+  - reader monad
+  - cats mtl
+  - scala tofu
+  - scala architecture
+  - scala monad transformers
+  - scala applications architecture
+  - scala app architecture
+  - functional programming
+classes: wide
 ---
 
 That note pretends to be an overview of dependency management in Scala applications. 
