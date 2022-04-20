@@ -20,8 +20,10 @@ categories:
 - scala app architecture
 - functional programming
   classes: wide
+---
 
 That note pretends to be an overview of dependency management in Scala applications. 
+
 
 ## Motivation
 My incentives to elaborate on this are messy a bit.
