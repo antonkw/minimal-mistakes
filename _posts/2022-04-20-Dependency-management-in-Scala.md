@@ -187,6 +187,7 @@ With such phrasing, we end up with an open ending. Bringing the context doesn't 
 Questions that I want to pose and postpone.
 1. How often do we need to show dependencies as part of interfaces? What can we leverage by doing that? Are there *consequences*?
 2. Are there means to specify necessary parts precisely without building unique contexts everywhere?
+
 #### Dependency as API detail
 The lowest common denominator of many discussions of "reader or constructor" is the argument that the reader exposes details required to build *instances of abstractions*.
 At that moment, I don't want to facilitate counter-arguments. So instead, I suggest just inverting it. Can we say "classes with constructors don't allow to bring context-details as part of abstractions"? Sounds not cool and straightforward. I hope a tiny example will be helpful.
@@ -249,7 +250,7 @@ We can't list app services straightforwardly, even without precise details and t
 
 We stated that we have two contrary alternatives:
 - **Cook a unique environment for each function.** It barely works; formerly, we strive for better dependency management. Creating specific contexts with all necessary dependencies (and we should pass everything through the layers) could not be part of such a plan.
-- Re-use one context everywhere. At that point, we're entirely missing the transparency point. Readers want an environment that contains everything literally. With that approach, we can't even observe a dependency graph in any form since everybody can use any part of the context.
+- **Re-use one context everywhere.** At that point, we're entirely missing the transparency point. Readers want an environment that contains everything literally. With that approach, we can't even observe a dependency graph in any form since everybody can use any part of the context.
 
 There is still a tempting idea to union benefits of both somehow. It would be great to have some context we had built once. Herewith, we also need some sophisticated means not to specify a direct dependency on the context. It would be great to force an abstract context to provide any necessary parts. That's how we might leverage the strength of both approaches.
 
