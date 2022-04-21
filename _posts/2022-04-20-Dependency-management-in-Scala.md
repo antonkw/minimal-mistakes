@@ -372,7 +372,7 @@ We addressed our initial problem but with workarounds:
 So where does that leave us? "What Did It Cost? Everything." Modern Scala is moving towards being friendly and easily adoptable. Solving problems in canonical way is fun but could do a great disservice too.
 
 #### Summary
-Long story short, Scala ecosystem has couple of main ways to orginize dependencies.
+Long story short, Scala ecosystem has couple of main ways to organize dependencies.
 1. Canonical Typelevel stack usually implies arrangement with constructors. Also, classes that [handle some subset of dependencies](https://github.com/gvolpe/pfps-shopping-cart/tree/second-edition/modules/core/src/main/scala/shop/modules) help keep neat even large graphs. Finally, environmental services are free to be passed implicitly.
 2. ZIO ecosystem promotes idea of having separate Reader channel. ZIO also provides good toolset to make usage as simple as possible. That means users have standardized practices to not fight with problems of pure Reader monad.
 
@@ -381,3 +381,13 @@ Lightweight DI frameworks could still help wire dependencies together; the next 
 Libraries like Cats MTL and ToFu help do non-trivial tricks in a couple of lines.
 
 That means there is no standardized way to undertake the task. Nevertheless, all approaches have a focus to be simple for reasoning. That's good news. There is plenty of tooling, and we're free to pick the best suitable options.
+
+
+###### Resources
+- [Dependency Injection in Functional Programming](https://gist.github.com/gvolpe/1454db0ed9476ed0189dcc016fd758aa)
+- [Practical FP in Scala: A hands-on approach](https://leanpub.com/pfp-scala)
+- [DevInsideYou](https://www.youtube.com/c/DevInsideYou)
+- [Reader & Constructor-based Dependency Injection - friend or foe?](https://softwaremill.com/reader-monad-constructor-dependency-injection-friend-or-foe/)
+- [Cake antipattern by kubuszok](https://kubuszok.com/2018/cake-antipattern/)
+- [Readers vs Constructors: Dependency Injection showdown by Adam Warski](https://www.youtube.com/watch?v=AkOFubm-9L8)
+- [F# for Fun and Profit: Six approaches to dependency injection](https://fsharpforfunandprofit.com/posts/dependencies/)
