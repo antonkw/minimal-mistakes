@@ -190,59 +190,47 @@ Questions that I want to pose and postpone.
 
 #### Dependency as API detail
 The lowest common denominator of many discussions of "reader or constructor" is the argument that the reader exposes details required to build *instances of abstractions*.
-At that moment, I don't want to facilitate counter-arguments. So instead, I suggest just inverting it. Can we say "classes with constructors don't allow to bring context-details as part of abstractions"? Sounds not cool and straightforward. I hope a tiny example will be helpful.
-Let us have a cache.
-```scala
-trait Cache[K, V]:
-  def get(k: K): V
-  def put(k: K, v: V): Unit
-```
-And now, we need to enrich semantics by saying "that cache use load function to get non-presented value."
-Constructor-based mindset prompts just to interpret it as an implementation detail.
-```scala
-object CacheLive {
-  def make[K, V](loadFunction: K => IO[V]): Cache[K,V]
-}
-```
-But can we bring the notion of load function as part of semantics? We're definitely in trouble. There is no single receipt to say "that cache use load function to acquire non-presented value."
-
-But anybody who will take a look at API will be inclined to think that sole way to get value is to put it there first. We're just misleading people!
-Moving `loadFunction` to the signature (of `get` ) give hint that we should manage those load functions. But we actually should emphasize that load function is kind of configuration of our *context*. Word "context" should remind us about implicits. In fact, implicit argument is good option. The problem I see is that we all used to not think about implicits like about part of abstraction. Loggers, encoders, all stuff like that are typically "technical support". As a result, anything passed as implicit could be perceived as annoying stuff (which hopefull will be automatically resolved by some magic import).
-Hence, the better option is to say that cache explicitly requires a fixed load function. And Reader is just the right tool to denote that fact.
-
-```scala
-trait ValueLoader[K, V]:  
-  def load(k: K): V  
-  
+Let's consider the opposite side. Adam's example above showed that `UserNotifier` needs `EmailServer` to notify users. It also explains how notifications are being delivered. I want to extend the idea. Let us have a cache.
+```scala  
 trait Cache[K, V]:  
-  def get(k: K): Reader[ValueLoader[K, V], V]  
-  def put(k: K, v: V): Unit
-```
-
-Now we precisely got what we implied. 
-<details>
-<summary>But the load function should return IO!</summary>
-
-It is easy to notice that returning to the version with IO will make the signature more difficult.
-
-```scala
-trait ValueLoader[F[_], K, V]:  
-  def load(k: K): F[V]  
-  
-trait Cache[F[_], K, V]:  
-  def get(k: K): Kleisli[F, ValueLoader[F, K, V], V]  
+  def get(k: K): V  
   def put(k: K, v: V): Unit  
-  
-class CacheLive[K, V] extends Cache[IO, K, V]:  
-  override def get(k: K): Kleisli[IO, ValueLoader[IO, K, V], V] = Kleisli(loader => loader.load(k))  
-  override def put(k: K, v: V): Unit = ???  
+```  
+The difference here is that without showing dependencies it is not clear what `Cache` is *supposed to do*. Our trait should explain behavior. But API says that we have a KV-like thing with `get` and `put`.
+Moreover, `put` seems like the main way to add value to the cache. So, it is reasonable to perceive such cache as a key-value structure probably with some TTL. But what if our cache also handles the loading of values?
+Constructor-based mindset prompts just to interpret it as an implementation detail.
+```scala  
+object CacheLive: 
+  def make[K, V](loadFunction: K => IO[V]): Cache[K,V]
 ```
-We'll try to that signature later.
-</details>
-Important thought here is a conscious movement toward a better *explanation of what is required to construct implementation.*
-Striving for encapsulation can nudge us to hide things instead of making a reasonable declaration.
 
-We meet an open ending again. The point here is understanding that sometimes we might want to lift dependencies to API declaration.
+So, `put` is something we need to update the value that we have edited; without `put` we need to wait for expiration and reloading. We have a strange situation at that point. The secondary way to set value deserves its own place and the main one is not.  
+The difference is that `put` should be declared to make it usable.
+Shouldn't we return to asking ourselves if the load function is a significant part of semantics and not just implementation detail?
+There is no single receipt to say "that cache use load function to acquire non-presented value."  
+But anybody who will take a look at API will be inclined to think that the sole way to get value is to put it there first. We're just misleading people!
+
+Moving `loadFunction` to the signature (of `get` ) gives hint that we should manage those load functions. But we actually should emphasize that load function is a kind of configuration of our *context*.
+
+Word "context" should remind us about implicits. In fact, implicit argument is a good option. The problem I see is that we all used to not think about implicits like about part of abstraction. Loggers, encoders, and all stuff like that are typically "technical support". As a result, anything passed as implicit could be perceived as annoying stuff (which hopefully will be automatically resolved by some magic import).  
+Hence, the better option is to say that cache explicitly requires a fixed load function.
+
+Reader looks like the right tool to denote that fact.
+
+```scala  
+trait ValueLoader[K, V]:    
+  def load(k: K): V    
+    
+trait Cache[K, V]:    
+  def get(k: K): Reader[ValueLoader[K, V], V]    
+  def put(k: K, v: V): Unit  
+```  
+
+Now we precisely got what we implied.  
+Important thought here is a conscious movement toward a better *explanation of which underlying components are required.* The load function simply works and doesn't require attention from a user. Nevertheless, we described its presence for better awareness.
+In fact, that ambiguity potentially has its own drawback.
+
+We meet an open ending again. The point here is understanding how Reader-inspired structures can affect API declaration.
 
 #### Large context without exposure of internals
 We can now try to tackle the "context trouble" we set out previously.
