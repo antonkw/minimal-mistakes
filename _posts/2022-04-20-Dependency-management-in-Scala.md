@@ -228,7 +228,7 @@ trait Cache[K, V]:
 
 Now we precisely got what we implied.  
 Important thought here is a conscious movement toward a better *explanation of which underlying components are required.* The load function simply works and doesn't require attention from a user. Nevertheless, we described its presence for better awareness.
-In fact, that ambiguity potentially has its own drawback.
+In fact, that ambiguity potentially has its own drawbacks.
 
 We meet an open ending again. The point here is understanding how Reader-inspired structures can affect API declaration.
 
