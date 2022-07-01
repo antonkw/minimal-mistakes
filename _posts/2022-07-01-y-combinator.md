@@ -78,8 +78,8 @@ Why did we suppose to do that? The experiment there is doing the simplest possib
 I loved the semi-joke by [Michael Vanier](https://mvanier.livejournal.com/2897.html):
 >It's a tried-and-true principle of functional programming that if you don't know exactly what you want to put somewhere in a piece of code, just abstract it out and make it a parameter of a function.
 
-<details markdown="span">
-<summary>More precise explanation via lambda calculus</summary>
+<details markdown="block">
+<summary markdown="span">More precise explanation via lambda calculus</summary>
 
 <a href="https://gogogle.com">lol2</a>
 [Recursive Lambda Functions the Y-Combinator](https://sookocheff.com/post/fp/recursive-lambda-functions/)
