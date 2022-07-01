@@ -79,7 +79,7 @@ I loved the semi-joke by [Michael Vanier](https://mvanier.livejournal.com/2897.h
 >It's a tried-and-true principle of functional programming that if you don't know exactly what you want to put somewhere in a piece of code, just abstract it out and make it a parameter of a function.
 
 <details markdown="span">
-<summary markdown="span">More precise explanation via lambda calculus</summary>
+<summary>More precise explanation via lambda calculus</summary>
 <a href="https://gogogle.com">lol</a>
 [Recursive Lambda Functions the Y-Combinator](https://sookocheff.com/post/fp/recursive-lambda-functions/)
 Let’s use the idea of a fixed-point function to help solve our addition problem using recursion. We already know how to use a function in lambda calculus: *function application*. Application involves substituting a function’s bound variables (arguments) with argument expressions and evaluating the function’s body. You can delay this application by wrapping your function in another function. For example,  the function  
