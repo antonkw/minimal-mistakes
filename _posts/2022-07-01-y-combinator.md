@@ -81,17 +81,17 @@ I loved the semi-joke by [Michael Vanier](https://mvanier.livejournal.com/2897.h
 <details markdown="block">
 <summary markdown="span">More precise explanation via lambda calculus</summary>
 
-<a href="https://gogogle.com">lol2</a>
-[Recursive Lambda Functions the Y-Combinator](https://sookocheff.com/post/fp/recursive-lambda-functions/)
 Let’s use the idea of a fixed-point function to help solve our addition problem using recursion. We already know how to use a function in lambda calculus: *function application*. Application involves substituting a function’s bound variables (arguments) with argument expressions and evaluating the function’s body. You can delay this application by wrapping your function in another function. For example,  the function  
 ```
 f : a
-```  is equivalent to the following function  
+```
+is equivalent to the following function  
 ```
 λg.(g:a):f 
 ```
 where the original function *f* becomes the argument of a new function application in the body of *g* — when *g* is applied, the return value is *f a*. By using *g* in place of f* in a recursive function, we can substitute the recursive call with a new function that does not recurse. 
 
+You can read whole note here: [Recursive Lambda Functions the Y-Combinator](https://sookocheff.com/post/fp/recursive-lambda-functions/).
 </details>
 
 Ok, let's do it. Let's replace `factorial` call in the body with `kernel` (it is not a full-featured factorial yet).
