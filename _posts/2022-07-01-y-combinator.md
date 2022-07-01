@@ -80,7 +80,8 @@ I loved the semi-joke by [Michael Vanier](https://mvanier.livejournal.com/2897.h
 
 <details markdown="span">
 <summary>More precise explanation via lambda calculus</summary>
-<a href="https://gogogle.com">lol</a>
+
+<a href="https://gogogle.com">lol2</a>
 [Recursive Lambda Functions the Y-Combinator](https://sookocheff.com/post/fp/recursive-lambda-functions/)
 Let’s use the idea of a fixed-point function to help solve our addition problem using recursion. We already know how to use a function in lambda calculus: *function application*. Application involves substituting a function’s bound variables (arguments) with argument expressions and evaluating the function’s body. You can delay this application by wrapping your function in another function. For example,  the function  
 ```
