@@ -11,12 +11,13 @@ tags:
   - scala cats
   - cats recursions
   - tail recursion
+  - cats tailRecM
   - functional programming
+  - y combinator scala
 classes: wide
 ---
 
-
-## Introduction
+# Introduction
 Argumentation about the necessity to familiarize with fixed points lies between two points of view:
 - Fixed points topic is part lambda calculus; no real demand to even read about it.
 - Fixed points are required to grasp recursive schemes. And recursive schemes are an essential topic on the FP agenda.
@@ -27,7 +28,14 @@ On my side, I found that I had a lack of naive feeling about what is the fixed p
 
 One of such fundamental conceptions is the Y combinator. There is a vast amount of diverse materials on the topic. And still, I spent a lot of time gathering pieces of understanding. I am sharing my path with the hope that somebody will enjoy the topic.
 
-## Theory
+The agenda for today is:
+- A little bit of theory to (not) understand what is a fixed-point combinator.
+- Attempt to withdraw self-reference from the classic factorial definition.
+- Writing Y Combinator step by step.
+- Writing code you might want to use in real life (no fixed points, just `tailRecM` from cats).
+
+
+# Theory
 Further, I'll be focused on practical aspects and derivation of naive understanding based on writing code. Before doing that, let's take a look at formal definitions.
 
 Wiki [says](https://en.wikipedia.org/wiki/Fixed_point_(mathematics)):
@@ -46,15 +54,15 @@ In strict functional programming and the lambda calculus, functions (lambda expr
 This rules out the usual definition of a recursive function wherein a function is associated with the state of a variable and this variable's state is used in the body of the function.
 The Y combinator is itself a stateless function that, when applied to another stateless function, returns a recursive version of the function.
 
-#### Resources
+## Resources
 Also, I want to share a couple of resources. You can skip them but I still wanted to make it part of the initial information. Some code transformations could be easier for understanding with those materials in mind.
 - The basic understanding of Lambda Calculus is going to be useful today. There is an extremely good talk to quickly gain acknowledgment: [Lambda Calculus - Fundamentals of Lambda Calculus & Functional Programming in JavaScript](https://www.youtube.com/watch?v=3VQ382QG-y4).
 - [Essentials: Functional Programming's Y Combinator - Computerphile](https://www.youtube.com/watch?v=9T8A89jgeTI) - lightweight explanation for those who like the academic way of definitions. For the rest of us, it could be just starting point of building a more solid perception.
 
-## Let's code!
+# Let's code!
 Scala nudges us to start from the end. We have the support of recursions and we can just use it. So, instead of derivation from scratch, we will rely on our experience. Whether we like it or not. We used to use the recursive definitions and now we can try to understand the mechanism better.
 
-#### recursions that we (don't) know
+## recursions that we (don't) know
 No surprise, the standard candidate to cope with is factorial:
 ```scala
 def factorial(x: Int): Int =
@@ -71,7 +79,7 @@ And before we started to do anything, I want to pay attention to the perception 
 Good CS curriculums bring lambda calculus and explain recursion as self-reference that could be expressed by a few manipulations. Those manipulations are required because lambda calculus has a very simple and limited ruleset; self-reference is not part of that limited set. Those who studied recursions in terms of some modern programming language have a chance to perceive any recursion function as something from [self-reference paradoxes list](https://en.wikipedia.org/wiki/List_of_paradoxes#Self%E2%80%93reference). From such a perspective, recursion works like a miracle and it is better to not think a lot about it.
 The common target of the next steps is to gain a better understanding of the internal structure and stop interpreting recursion as a black box (inside blackbox inside blackbox inside ...).
 
-#### saying goodbye to self-reference
+## saying goodbye to self-reference
 Well, let's return to `factorial` and try to withdraw self-reference.
 Why did we suppose to do that? The experiment there is doing the simplest possible step to not call `factorial` from `factorial`. We probably will need to do connections in some different ways after.
 
@@ -80,21 +88,20 @@ I loved the semi-joke by [Michael Vanier](https://mvanier.livejournal.com/2897.h
 
 <details markdown="block">
 <summary markdown="span">More precise explanation via lambda calculus</summary>
-
+[Recursive Lambda Functions the Y-Combinator](https://sookocheff.com/post/fp/recursive-lambda-functions/)
 Let’s use the idea of a fixed-point function to help solve our addition problem using recursion. We already know how to use a function in lambda calculus: *function application*. Application involves substituting a function’s bound variables (arguments) with argument expressions and evaluating the function’s body. You can delay this application by wrapping your function in another function. For example,  the function  
 ```
 f : a
-```
-is equivalent to the following function  
+```  is equivalent to the following function  
 ```
 λg.(g:a):f 
 ```
 where the original function *f* becomes the argument of a new function application in the body of *g* — when *g* is applied, the return value is *f a*. By using *g* in place of f* in a recursive function, we can substitute the recursive call with a new function that does not recurse. 
 
-You can read whole note here: [Recursive Lambda Functions the Y-Combinator](https://sookocheff.com/post/fp/recursive-lambda-functions/).
 </details>
 
-Ok, let's do it. Let's replace `factorial` call in the body with `kernel` (it is not a full-featured factorial yet).
+
+Let's replace `factorial` call in the body with `kernel` (it is not a full-featured factorial yet).
 ```scala
 (x: Int) => if (x == 0) 1 else x * kernel(x - 1)
 ```
@@ -129,7 +136,7 @@ def factorialWithKernel(kernel: Int => Int): Int => Int =
 ```
 </details>
 
-#### what is kernel?
+## what is kernel?
 What we can use as the simplest function? The identity function is our friend here.
 
 ```scala
@@ -205,7 +212,7 @@ n[11] * kernel(11 - 1)[420] = 4620
 Result for 11 applied to factorialWithDerivedKernel: 4620
 ```
 
-#### understanding properties of kernel
+## understanding properties of kernel
 Now we understand what we missed once moved to non-recursive `factorialWithKernel` with `kernel` parameter.
 `kernel` itself is missed!
 We somehow don't care about what it particularly does. But still, it should be generated and passed and we barely can do it on our own.
@@ -224,11 +231,13 @@ We're passing the `kernel`. And we expect as a result is the same function that 
 And that is the most mind-blowing thing.
 We need such `kernel` that we can pass to `factorialWithKernel`  and receive back the same `kernel` function. Again, `factorialWithKernel(kernel)` should be equal to `kernel` itself.
 
-<details>
-<summary>Equality of functions</summary>
-[Equality of Functions](https://mathstats.uncg.edu/sites/pauli/112/HTML/secfuneq.html) rule. 
+<details markdown="block">
+<summary markdown="span">Equality of functions</summary>
+
+[Equality of Functions](https://mathstats.uncg.edu/sites/pauli/112/HTML/secfuneq.html) rule.
 Two functions are equal if they have the same domain and codomain and their values are the same for all elements of the domain.
 </details>
+
 An attempt to manually derive the kernel works badly here. It is hard to think about equality once the second function is derived from the first one and that second function can calculate factorial for **1** while the first returns a dummy value.
 When you do not write the functions down and just explore properties then the `kernel` is just a function that calculates the factorial of a decremented number. And the same function is returned.
 
@@ -241,9 +250,9 @@ At that particular moment, things are joining together. We need fixed-point comb
 
 It doesn't clear how it could work. But we can try to move step by step with the hope that iterative updates will work in the end.
 
-#### Y Combinator
+## Y Combinator
 
-#### Initial steps
+### Initial steps
 Good. Step number one. Set up the signature.
 We want to pass our `factorialWithKernel` and receive simple `Int => Int` back, let's just put the appropriate signature.
 ```scala
@@ -297,7 +306,7 @@ def fix[A](f: (A => A) => (A => A)): A => A = {
 
 It compiles!
 
-#### Fighting with overflows
+### Fighting with overflows
 
 ```scala
 val factorial: Int => Int = fix(factorialWithKernel)
@@ -363,7 +372,7 @@ Result for 11 applied to fixedFactorial: 39916800
 
 The `fix` manages to perform a pseudo-self-reference trick and "exit on time" without cycling.
 
-#### Built-in syntax
+### Built-in syntax
 Explicit notes.
 1. Scala provides native syntax to define a non-recursive function with self-reference
 ```scala
@@ -460,35 +469,33 @@ Naturally, very mechanical `multiplyAndDecrement` could be replaced by a high-le
 Now we have more maintainable and self-descriptive structure
 ```scala
 case class Factorials(
-  number: Int, 
-  factorial: BigInt, 
-  factorials: Map[Int, BigInt]
-) {  
-  
+                       number: Int,
+                       factorial: BigInt,
+                       factorials: Map[Int, BigInt]
+                     ) {
+
   /** Generates state for next iteration (in terms of algorithm that increases a value on each step)  
-    * @return  
-    *   updated state  
-    */  
-  def nextFactorial: Factorials = {  
-    val incremented: Int   = this.number + 1  
-    val calculated: BigInt = this.factorial * incremented  
-    println(s"Factorial for $incremented is $calculated")  
-    this.copy(  
-      number = incremented,  
-      factorial = calculated,  
-      this.factorials + (incremented -> calculated)  
-    )  
-  }  
-}  
-  
-object Factorials {  
-  val initial: Factorials = Factorials(0, 1, Map(0 -> 1))  
-}  
-  
-def factorialsUntil(x: Int): Map[Int, BigInt] =  
-  FlatMap[Id].tailRecM[Factorials, Map[Int, BigInt]](Factorials.initial)(state =>  
-    if (state.number == x) state.factorials.asRight else state.nextFactorial.asLeft  
+   * @return
+   *   updated state  
+   */
+  def nextFactorial: Factorials = {
+    val incremented: Int   = this.number + 1
+    val calculated: BigInt = this.factorial * incremented
+    println(s"Factorial for $incremented is $calculated")
+    this.copy(
+      number = incremented,
+      factorial = calculated,
+      this.factorials + (incremented -> calculated)
+    )
+  }
+}
+
+object Factorials {
+  val initial: Factorials = Factorials(0, 1, Map(0 -> 1))
+}
+
+def factorialsUntil(x: Int): Map[Int, BigInt] =
+  FlatMap[Id].tailRecM[Factorials, Map[Int, BigInt]](Factorials.initial)(state =>
+    if (state.number == x) state.factorials.asRight else state.nextFactorial.asLeft
   )
 ```
-
-
