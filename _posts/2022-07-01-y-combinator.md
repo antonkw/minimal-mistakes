@@ -62,14 +62,15 @@ Also, I want to share a couple of resources. You can skip them but I still wante
 # Let's code!
 Scala nudges us to start from the end. We have the support of recursions and we can just use it. Whether we like it or not, we always refer to our experience. So, I suggest to not deriving anything from scratch, but making a function *less recursive*.  We used to use recursive definitions and now we have a chance to understand the mechanism better.
 
-## recursion that we (don't) know
-No surprise, the standard candidate to cope with is factorial:
+## recursions that we (don't) know
+No surprise, the standard candidate to cope with is factorial.
+[standard_definition.worksheet.sc](https://github.com/antonkw/recursions/blob/main/src/main/scala/io/github/antonkw/01_standard_definition.worksheet.sc):
 ```scala
 def factorial(x: Int): Int =
   if (x == 0) 1 else x * factorial(x - 1)
 ```
 
-An explicit type will help to follow manipulations better:
+An explicit type will help to follow manipulations better. [standard_definition_with_explicit_typing.worksheet.sc](https://github.com/antonkw/recursions/blob/main/src/main/scala/io/github/antonkw/02_standard_definition_with_explicit_typing.worksheet.sc):
 ```scala
 def factorial: Int => Int =
   (x: Int) => if (x == 0) 1 else x * factorial(x - 1)
@@ -109,7 +110,7 @@ Let's replace `factorial` call in the body with `kernel` (it is not a full-featu
 (x: Int) => if (x == 0) 1 else x * kernel(x - 1)
 ```
 
-And `kernel` is our parameter now, it takes a number, and returns a number too.
+And `kernel` is our parameter now, it takes a number, and returns a number too. [factorial_with_kernel.worksheet.sc](https://github.com/antonkw/recursions/blob/main/src/main/scala/io/github/antonkw/03_factorial_with_kernel.worksheet.sc):
 ```scala
 def factorialWithKernel(kernel: Int => Int): Int => Int =
   (x: Int) => if (x == 0) 1 else x * kernel(x - 1)
@@ -122,7 +123,8 @@ We need to understand what we really want from our "simple" `kernel` function.
 
 <details>
 <summary>Let's add more logging</summary>
-We need more evidence!
+
+We need more evidence! [factorial_with_kernel_logged.worksheet.sc](https://github.com/antonkw/recursions/blob/main/src/main/scala/io/github/antonkw/04_factorial_with_kernel_logged.worksheet.sc):
 ```scala
 def factorialWithKernel(kernel: Int => Int): Int => Int =
   n => {
@@ -375,6 +377,7 @@ Result for 11 applied to fixedFactorial: 39916800
 ```
 
 The `fix` manages to perform a pseudo-self-reference trick and "exit on time" without cycling.
+Source code for all the iterations could be found here: [fix.sc](https://github.com/antonkw/recursions/blob/main/src/main/scala/io/github/antonkw/05_fix.sc)
 
 ## Built-in syntax
 Explicit notes.
@@ -408,7 +411,7 @@ def factorial(x: Int): BigInt = {
   factorialIteration(x, accumulator = 1)  
 }
 ```
-
+Snippets: [factorial_tail_rec.worksheet.sc](https://github.com/antonkw/recursions/blob/main/src/main/scala/io/github/antonkw/06_factorial_tail_rec.worksheet.sc)
 ## Summary
 There is not much sense in having Y Combinator as separate util:
 - Scala has built-in syntax to write functions with explicit self-reference.
@@ -460,7 +463,7 @@ case class FactorialStepState(current: Int, accumulator: BigInt) {
 }
 ```
 
-Now it is simplified.
+Now it is simplified. [factorial_tailRecM.worksheet.sc](https://github.com/antonkw/recursions/blob/main/src/main/scala/io/github/antonkw/07_factorial_tailRecM.worksheet.sc):
 ```scala
 def factorial(x: Int): BigInt =  
   FlatMap[Id].tailRecM[FactorialStepState, BigInt](FactorialStepState.initial(x))(state =>  
@@ -510,3 +513,17 @@ def factorialsUntil(x: Int): Map[Int, BigInt] =
     if (state.number == x) state.factorials.asRight else state.nextFactorial.asLeft  
   )
 ```
+
+The final step is fixed in following snippet: [asc_factorial_tailRecM.worksheet.sc](https://github.com/antonkw/recursions/blob/main/src/main/scala/io/github/antonkw/08_asc_factorial_tailRecM.worksheet.sc)
+
+Thanks for reading!
+Feel free to reach me via [Twitter](https://twitter.com/antonkw_sky)
+
+# Resources
+- [Wiki: Fixed point](https://en.wikipedia.org/wiki/Fixed_point_(mathematics))
+- [Computerphile (YouTube) – Essentials: Functional Programming's Y Combinator](https://www.youtube.com/watch?v=9T8A89jgeTI)
+- [Ayaka Nonaka (Medium) – The Y Combinator (no, not that one)](https://medium.com/@ayanonagon/the-y-combinator-no-not-that-one-7268d8d9c46
+- [Fullstack Academy (YouTube) – Fundamentals of Lambda Calculus(https://www.youtube.com/watch?v=3VQ382QG-y4)
+- [Rosetta Code: Y combinator](https://rosettacode.org/wiki/Y_combinator)
+- [Sorawee Porncharoenwase – Deriving the Y Combinator](https://homes.cs.washington.edu/~sorawee/en/blog/2017/10-05-deriving-Y.html)
+- [Kevin Sookocheff – Recursive Lambda Functions](https://sookocheff.com/post/fp/recursive-lambda-functions/)
