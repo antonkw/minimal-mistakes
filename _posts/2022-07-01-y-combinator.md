@@ -18,15 +18,15 @@ classes: wide
 ---
 
 # Introduction
-Argumentation about the necessity to familiarize with fixed points lies between two points of view:
+Argumentation about the necessity to familiarize with fixed points lies between opposite stances:
 - Fixed points topic is part lambda calculus; no real demand to even read about it.
 - Fixed points are required to grasp recursive schemes. And recursive schemes are an essential topic on the FP agenda.
 
-Both make sense. I don't think a career can be stuck due to "non-knowing recursions." But still, everyday programming ends up with some recursions sometimes. And better acknowledgment makes life easier.
+Both make sense. I don't think somebody can generally be stuck in a career  due to "non-knowing recursions." But still, everyday programming ends up with some recursions sometimes. And better acknowledgment makes life easier.
 
 On my side, I found that I had a lack of naive feeling about what is the fixed point. Initially, I attempted to dive into the [matryoshka](https://github.com/precog/matryoshka)library. There was not a single attempt but approaching from time to time. And every time, I was scared by the number of prerequisites required to understand the basics.
 
-One of such fundamental conceptions is the Y combinator. There is a vast amount of diverse materials on the topic. And still, I spent a lot of time gathering pieces of understanding. I am sharing my path with the hope that somebody will enjoy the topic.
+One of such fundamental conceptions is the Y combinator. There is a vast amount of diverse materials on the topic. And still, I spent a lot of time gathering pieces together. I am sharing my path with the hope that somebody will be able to cut a path.
 
 The agenda for today is:
 - A little bit of theory to (not) understand what is a fixed-point combinator.
@@ -36,16 +36,16 @@ The agenda for today is:
 
 
 # Theory
-Further, I'll be focused on practical aspects and derivation of naive understanding based on writing code. Before doing that, let's take a look at formal definitions.
+Further, I'll be focused on practical aspects. That means writing code as way to build naive understanding. Before doing that, let's take a look at formal definitions.
 
 Wiki [says](https://en.wikipedia.org/wiki/Fixed_point_(mathematics)):
->**fixed point** (also fixpoint or invariant point) of a function is an element that is mapped to itself by the function. That is, *c* is a fixed point of a function *f* if *c* belongs to both the domain and the codomain of f, and _f_(_c_) = _c_.
+>**fixed point** (also fixpoint or invariant point) of a function is an element that is mapped to itself by the function. That is, **c** is a fixed point of a function ***f*** if ***c*** belongs to both the domain and the codomain of **f**, and **_f_(_c_) = _c_**.
 
 For example, if _f_ is defined on the real numbers by
-*f(x)=x<sup>2</sup>-3x+4*
+***f(x)=x<sup>2</sup>-3x+4***
 then ***2*** is a fixed point of **_f_**, because ***f(2) = 2***.
 
-The next brick is [Fixed-point combinator](https://en.wikipedia.org/wiki/Fixed-point_combinator):
+The next brick is [Fixed-point combinator](https://en.wikipedia.org/wiki/Fixed-point_combinator)(or Y combinator):
 >**fixed-point combinator** is a higher-order function that returns some fixed point of its argument function, if one exists.
 
 And more well-formulated motivation could be found on [Rosetta Code page](https://rosettacode.org/wiki/Y_combinator):
@@ -55,14 +55,14 @@ This rules out the usual definition of a recursive function wherein a function i
 The Y combinator is itself a stateless function that, when applied to another stateless function, returns a recursive version of the function.
 
 ## Resources
-Also, I want to share a couple of resources. You can skip them but I still wanted to make it part of the initial information. Some code transformations could be easier for understanding with those materials in mind.
+Also, I want to share a couple of resources. You can skip them but I still wanted to make it part of the initial familiarization. Some code transformations could be easier for understanding with those materials in mind.
 - The basic understanding of Lambda Calculus is going to be useful today. There is an extremely good talk to quickly gain acknowledgment: [Lambda Calculus - Fundamentals of Lambda Calculus & Functional Programming in JavaScript](https://www.youtube.com/watch?v=3VQ382QG-y4).
 - [Essentials: Functional Programming's Y Combinator - Computerphile](https://www.youtube.com/watch?v=9T8A89jgeTI) - lightweight explanation for those who like the academic way of definitions. For the rest of us, it could be just starting point of building a more solid perception.
 
 # Let's code!
-Scala nudges us to start from the end. We have the support of recursions and we can just use it. So, instead of derivation from scratch, we will rely on our experience. Whether we like it or not. We used to use the recursive definitions and now we can try to understand the mechanism better.
+Scala nudges us to start from the end. We have the support of recursions and we can just use it. Whether we like it or not, we always refer to our experience. So, I suggest to not deriving anything from scratch, but making a function *less recursive*.  We used to use recursive definitions and now we have a chance to understand the mechanism better.
 
-## recursions that we (don't) know
+## recursion that we (don't) know
 No surprise, the standard candidate to cope with is factorial:
 ```scala
 def factorial(x: Int): Int =
@@ -88,15 +88,17 @@ I loved the semi-joke by [Michael Vanier](https://mvanier.livejournal.com/2897.h
 
 <details markdown="block">
 <summary markdown="span">More precise explanation via lambda calculus</summary>
+
 [Recursive Lambda Functions the Y-Combinator](https://sookocheff.com/post/fp/recursive-lambda-functions/)
-Let’s use the idea of a fixed-point function to help solve our addition problem using recursion. We already know how to use a function in lambda calculus: *function application*. Application involves substituting a function’s bound variables (arguments) with argument expressions and evaluating the function’s body. You can delay this application by wrapping your function in another function. For example,  the function  
+Let’s use the idea of a fixed-point function to help solve our addition problem using recursion. We already know how to use a function in lambda calculus: *function application*. Application involves substituting a function’s bound variables (arguments) with argument expressions and evaluating the function’s body. You can delay this application by wrapping your function in another function. For example,  the function
 ```
 f : a
-```  is equivalent to the following function  
+```  
+is equivalent to the following function
 ```
 λg.(g:a):f 
 ```
-where the original function *f* becomes the argument of a new function application in the body of *g* — when *g* is applied, the return value is *f a*. By using *g* in place of f* in a recursive function, we can substitute the recursive call with a new function that does not recurse. 
+where the original function *f* becomes the argument of a new function application in the body of *g* — when *g* is applied, the return value is *f a*. By using *g* in place of f* in a recursive function, we can substitute the recursive call with a new function that does not recurse.
 
 </details>
 
@@ -469,33 +471,33 @@ Naturally, very mechanical `multiplyAndDecrement` could be replaced by a high-le
 Now we have more maintainable and self-descriptive structure
 ```scala
 case class Factorials(
-                       number: Int,
-                       factorial: BigInt,
-                       factorials: Map[Int, BigInt]
-                     ) {
-
+  number: Int, 
+  factorial: BigInt, 
+  factorials: Map[Int, BigInt]
+) {  
+  
   /** Generates state for next iteration (in terms of algorithm that increases a value on each step)  
-   * @return
-   *   updated state  
-   */
-  def nextFactorial: Factorials = {
-    val incremented: Int   = this.number + 1
-    val calculated: BigInt = this.factorial * incremented
-    println(s"Factorial for $incremented is $calculated")
-    this.copy(
-      number = incremented,
-      factorial = calculated,
-      this.factorials + (incremented -> calculated)
-    )
-  }
-}
-
-object Factorials {
-  val initial: Factorials = Factorials(0, 1, Map(0 -> 1))
-}
-
-def factorialsUntil(x: Int): Map[Int, BigInt] =
-  FlatMap[Id].tailRecM[Factorials, Map[Int, BigInt]](Factorials.initial)(state =>
-    if (state.number == x) state.factorials.asRight else state.nextFactorial.asLeft
+    * @return  
+    *   updated state  
+    */  
+  def nextFactorial: Factorials = {  
+    val incremented: Int   = this.number + 1  
+    val calculated: BigInt = this.factorial * incremented  
+    println(s"Factorial for $incremented is $calculated")  
+    this.copy(  
+      number = incremented,  
+      factorial = calculated,  
+      this.factorials + (incremented -> calculated)  
+    )  
+  }  
+}  
+  
+object Factorials {  
+  val initial: Factorials = Factorials(0, 1, Map(0 -> 1))  
+}  
+  
+def factorialsUntil(x: Int): Map[Int, BigInt] =  
+  FlatMap[Id].tailRecM[Factorials, Map[Int, BigInt]](Factorials.initial)(state =>  
+    if (state.number == x) state.factorials.asRight else state.nextFactorial.asLeft  
   )
 ```
