@@ -24,7 +24,7 @@ Argumentation about the necessity to familiarize with fixed points lies between 
 
 Both make sense. I don't think somebody can generally be stuck in a career  due to "non-knowing recursions." But still, everyday programming ends up with some recursions sometimes. And better acknowledgment makes life easier.
 
-On my side, I found that I had a lack of naive feeling about what is the fixed point. Initially, I attempted to dive into the [matryoshka](https://github.com/precog/matryoshka)library. There was not a single attempt but approaching from time to time. And every time, I was scared by the number of prerequisites required to understand the basics.
+On my side, I found that I had a lack of naive feeling about what is the fixed point. Initially, I attempted to dive into the [matryoshka](https://github.com/precog/matryoshka) library. There was not a single attempt but approaching from time to time. And every time, I was scared by the number of prerequisites required to understand the basics.
 
 One of such fundamental conceptions is the Y combinator. There is a vast amount of diverse materials on the topic. And still, I spent a lot of time gathering pieces together. I am sharing my path with the hope that somebody will be able to cut a path.
 
@@ -90,6 +90,7 @@ I loved the semi-joke by [Michael Vanier](https://mvanier.livejournal.com/2897.h
 <summary markdown="span">More precise explanation via lambda calculus</summary>
 
 [Recursive Lambda Functions the Y-Combinator](https://sookocheff.com/post/fp/recursive-lambda-functions/)
+
 Let’s use the idea of a fixed-point function to help solve our addition problem using recursion. We already know how to use a function in lambda calculus: *function application*. Application involves substituting a function’s bound variables (arguments) with argument expressions and evaluating the function’s body. You can delay this application by wrapping your function in another function. For example,  the function
 ```
 f : a
@@ -237,6 +238,7 @@ We need such `kernel` that we can pass to `factorialWithKernel`  and receive bac
 <summary markdown="span">Equality of functions</summary>
 
 [Equality of Functions](https://mathstats.uncg.edu/sites/pauli/112/HTML/secfuneq.html) rule.
+
 Two functions are equal if they have the same domain and codomain and their values are the same for all elements of the domain.
 </details>
 
@@ -252,9 +254,9 @@ At that particular moment, things are joining together. We need fixed-point comb
 
 It doesn't clear how it could work. But we can try to move step by step with the hope that iterative updates will work in the end.
 
-## Y Combinator
+# Y Combinator
 
-### Initial steps
+## Initial steps
 Good. Step number one. Set up the signature.
 We want to pass our `factorialWithKernel` and receive simple `Int => Int` back, let's just put the appropriate signature.
 ```scala
@@ -308,7 +310,7 @@ def fix[A](f: (A => A) => (A => A)): A => A = {
 
 It compiles!
 
-### Fighting with overflows
+## Fighting with overflows
 
 ```scala
 val factorial: Int => Int = fix(factorialWithKernel)
@@ -374,7 +376,7 @@ Result for 11 applied to fixedFactorial: 39916800
 
 The `fix` manages to perform a pseudo-self-reference trick and "exit on time" without cycling.
 
-### Built-in syntax
+## Built-in syntax
 Explicit notes.
 1. Scala provides native syntax to define a non-recursive function with self-reference
 ```scala
@@ -407,8 +409,15 @@ def factorial(x: Int): BigInt = {
 }
 ```
 
+## Summary
+There is not much sense in having Y Combinator as separate util:
+- Scala has built-in syntax to write functions with explicit self-reference.
+- You are free to write usual recursions.
 
-## Tail recursions and monads
+Diving into Y Combinator is still worth it. It creates patterns that are vital for proceeding with different recursion-related topics like recursive schemes.
+
+# Tail recursions and monads
+To wrap up the topic I also added directions that happen in real-life coding.
 ### tailRecM and explicit state for each iteration
 In real applications, we typically need to handle some IO. `cats.FlatMap.tailRecM` is our friend there.
 
@@ -439,7 +448,7 @@ def factorial(x: Int): BigInt =
     ).asLeft  
 )
 ```
-And once state itself is connected to some particular approach, it is ok to add specific functions to the state class iteself.
+And once the state itself is connected to some particular approach, it is ok to add specific functions to the state class itself.
 ```scala
 case class FactorialStepState(current: Int, accumulator: BigInt) {  
   
@@ -462,13 +471,13 @@ def factorial(x: Int): BigInt =
 
 Often, we can gain more transparency after adding explicit state descriptions.
 Attempts to give meaningful names and write accurate functions nudge to be very specific.
-In factorial case, `current` and `accumulator` are just generic names for any kind of folding iteration. So, that's like using `i` in while/for loop. It would be better to use anything meaningful. And that's not easy in our case. [There are only two hard things in Computer Science: cache invalidation and naming things.](https://martinfowler.com/bliki/TwoHardThings.html)
+In the factorial case, `current` and `accumulator` are just generic names for any kind of folding iteration. So, that's like using `i` in while/for loop. It would be better to use anything meaningful. And that's not easy in our case. [There are only two hard things in Computer Science: cache invalidation and naming things.](https://martinfowler.com/bliki/TwoHardThings.html)
 We have some accumulator, it aggregates results of multiplication but there is no specific name for such kind of multiplication.
-We have "factorial" itself but it is the multiplication of numbers in ascending order. But once we start to care more about transparency, there are no obstacles to amending the algorithm.
-We can start from 1 and iteratively multiply numbers in descending orders to have meaningful values.
+We have "factorial" itself but it is the multiplication of numbers in ascending order. But once we start to care more about transparency, we're free to change the shape of the algorithm.
+We can start from 1 and iteratively multiply numbers in ascending order to have meaningful values.
 `number: Int` and `factorial: BigInt` have much more sense, also we can return all calculated factorials together as `factorials: Map[Int, BigInt]`.
 Naturally, very mechanical `multiplyAndDecrement` could be replaced by a high-level `nextFactorial` function.
-Now we have more maintainable and self-descriptive structure
+Now we have a more maintainable and self-descriptive structure
 ```scala
 case class Factorials(
   number: Int, 
