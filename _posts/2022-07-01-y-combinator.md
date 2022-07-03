@@ -3,7 +3,7 @@ title: "Write Y Combinator to understand recursions better"
 permalink: /scala/y-combinator/
 # header:
 #   image: /assets/images/writerjpg.jpg
-excerpt: "Implementation of Y Combinator from scratch (in Scala). It helps to understand structure of recursions."
+excerpt: "Implementation of Y Combinator from scratch (in Scala). It helps to understand structure of recursions. In the post we'll take a look how to approach recursive functions without self-reference."
 categories:
   - scala
 tags:
@@ -522,8 +522,8 @@ Feel free to reach me via [Twitter](https://twitter.com/antonkw_sky)
 # Resources
 - [Wiki: Fixed point](https://en.wikipedia.org/wiki/Fixed_point_(mathematics))
 - [Computerphile (YouTube) – Essentials: Functional Programming's Y Combinator](https://www.youtube.com/watch?v=9T8A89jgeTI)
-- [Ayaka Nonaka (Medium) – The Y Combinator (no, not that one)](https://medium.com/@ayanonagon/the-y-combinator-no-not-that-one-7268d8d9c46
-- [Fullstack Academy (YouTube) – Fundamentals of Lambda Calculus(https://www.youtube.com/watch?v=3VQ382QG-y4)
+- [Ayaka Nonaka (Medium) – The Y Combinator (no, not that one)](https://medium.com/@ayanonagon/the-y-combinator-no-not-that-one-7268d8d9c46)
+- [Fullstack Academy (YouTube) – Fundamentals of Lambda Calculus](https://www.youtube.com/watch?v=3VQ382QG-y4)
 - [Rosetta Code: Y combinator](https://rosettacode.org/wiki/Y_combinator)
 - [Sorawee Porncharoenwase – Deriving the Y Combinator](https://homes.cs.washington.edu/~sorawee/en/blog/2017/10-05-deriving-Y.html)
 - [Kevin Sookocheff – Recursive Lambda Functions](https://sookocheff.com/post/fp/recursive-lambda-functions/)
