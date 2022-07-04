@@ -121,8 +121,8 @@ We decoupled self-reference and now the kernel is not calling kernel. At least, 
 I suggest playing around with `factorialWithKernel` before we start to return magic back.
 We need to understand what we really want from our "simple" `kernel` function.
 
-<details>
-<summary>Let's add more logging</summary>
+<details markdown="block">
+<summary markdown="span">Let's add more logging</summary>
 
 We need more evidence! [factorial_with_kernel_logged.worksheet.sc](https://github.com/antonkw/recursions/blob/main/src/main/scala/io/github/antonkw/04_factorial_with_kernel_logged.worksheet.sc):
 ```scala
