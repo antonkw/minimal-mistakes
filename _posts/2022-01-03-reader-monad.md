@@ -51,7 +51,9 @@ At the very first step we have function that initiates JDBC connection, updates 
 ```scala
 def setPassword(user: String, hash: String) = {
   Class.forName("org.postgresql.Driver")
-  val connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/antonkw", properties)val statement = connection.prepareStatement("update users set secret_hash = ? where name = ?")statement.setString(1, hash)
+  val connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/antonkw", properties)
+  val statement = connection.prepareStatement("update users set secret_hash = ? where name = ?")
+  statement.setString(1, hash)
   statement.setString(2, user)
   statement.executeUpdate()
   connection.close()
@@ -63,7 +65,8 @@ It sounds sensible to not mix logic and management of connections.
 ```scala
 def setPassword(user: String, hash: String) = {
   val connection = ConnectionFactory.getConnection
-  val statement = connection.prepareStatement("update users set secret_hash = ? where name = ?")statement.setString(1, hash)
+  val statement = connection.prepareStatement("update users set secret_hash = ? where name = ?")
+  statement.setString(1, hash)
   statement.setString(2, user)
   statement.executeUpdate()
 }
@@ -77,7 +80,8 @@ Key negative points:
 We can finally get rid of initialization inside our tiny function.
 ```scala
 def setPassword(user: String, hash: String, connection: Connection) = {
-  val statement = connection.prepareStatement("update users set secret_hash = ? where name = ?")statement.setString(1, hash)
+  val statement = connection.prepareStatement("update users set secret_hash = ? where name = ?")
+  statement.setString(1, hash)
   statement.setString(2, user)
   statement.executeUpdate()
 }
@@ -87,20 +91,23 @@ We know that connection will be managed at the higher-level. Therefore, we allow
 ```scala
 def connectAndSetPassword(user: String, hash: String) = {
   Class.forName("org.postgresql.Driver")
-  val connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/antonkw", properties)setPassword(user, hash)
+  val connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/antonkw", properties)
+  setPassword(user, hash, connection)
   connection.close()
 }
 ```
 
-In fact, even our function could become a "higher level" function that should "feed" connection.
+In fact, even our function could become a "higher level" function that should consume connection.
 ```scala
 def setPassword(user: String, hash: String, connection: Connection) = {
-  val statement = connection.prepareStatement("update users set secret_hash = ? where name = ?")statement.setString(1, hash)
+  val statement = connection.prepareStatement("update users set secret_hash = ? where name = ?")
+  statement.setString(1, hash)
   statement.setString(2, user)
   statement.executeUpdate()
   savePasswordChangeReport(user, connection)
 }
 ```
+
 `setPassword` should be also called after some checks that require connection.
 What does it mean?
 While it is possible to fix convention that lifecycle is managed by some factory it still should be passed back-and-forth across the layers of logic.
