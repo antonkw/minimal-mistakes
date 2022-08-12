@@ -1,5 +1,5 @@
 ---
-title: "Write Y Combinator to understand recursions better"
+title: "Selection functions is interesting notion with tricky implementation"
 permalink: /scala/selection-functions/
 # header:
 #   image: /assets/images/writerjpg.jpg
