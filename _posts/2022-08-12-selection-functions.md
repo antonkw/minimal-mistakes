@@ -14,10 +14,11 @@ tags:
   - selection functions scala
 classes: wide
 ---
-"Sequential Games and Optimal Strategies" by Martın Escardo and Paulo Oliva has the best possible introduction:
+"Sequential Games and Optimal Strategies" by Martín Escardó and Paulo Oliva has the best possible introduction:
 > Life is the sum of all your choices, so said Albert Camus. But what does “choice” mean? One could say that to choose is to select one element x out of a set X of possible candidates.
 
-The note will be devoted to selection functions that are all about choices from some sets of options.  
+The note is devoted to selection functions. They are all about choices which imply having sets of options.  
+
 Selection functions are not something we can leverage in daily programming.
 Notwithstanding, playing around with selection functions was fun for me. I stuck a couple of times because of approaches that were not obvious to me. And adopting new thinking patterns is something why we all love programming.
 
