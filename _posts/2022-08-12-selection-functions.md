@@ -17,7 +17,7 @@ classes: wide
 "Sequential Games and Optimal Strategies" by Martín Escardó and Paulo Oliva has the best possible introduction:
 > Life is the sum of all your choices, so said Albert Camus. But what does “choice” mean? One could say that to choose is to select one element x out of a set X of possible candidates.
 
-The note is devoted to selection functions. They are all about choices which imply having sets of options.  
+The note is devoted to selection functions. They are all about choices that have underlying sets of options.  
 
 Selection functions are not something we can leverage in daily programming.
 Notwithstanding, playing around with selection functions was fun for me. I stuck a couple of times because of approaches that were not obvious to me. And adopting new thinking patterns is something why we all love programming.
@@ -112,19 +112,25 @@ def overline[R, A]: J[R, A] => K[R, A] =
 val maxPowerOfBmw = overline(bmwSelectionByHp)(_.power) // 523
 ```
 
+
 # Combining two selections
 Things become much less obvious once we try to "glue" a couple of functions together.
-Selection functions should help with choices. And choices should be made in combination with other choices. Let's start for pair of selections.
+Selection functions should help with choices. And choices should be made in combination with other choices. 
+Let's start with a pair of selections.
 
 ## Signature of the pairing function
 First of all, we need to agree on the signature.
-Let us have two functions: `J[R1, A]` and `J[R2, B]`.
-We want to combine *choices*. That means that we expect that choices could have different nature. So, distinguishing `A` and `B` is desired flexibility.
-And what about typing for "truth values"? We can foresee that values to judge the `A`/`B`-combination is our "pairing point."
-We might want to have the same return type of evaluation function. In that case, pairing `J[R, A]` and `J[R, B]` should lead to a selection like `J[R, (A, B)]`.  We had individual `A => R` and `B => R`, and to judge pair we'll need `(A, B) => R`.
-With separate `R`s, there will be no "contact points." An exploded signature is not a problem by itself. The missed piece, in that case, is a lack of notion of common judgment in terms of a particular combination.
 
-Well, we have the signature.
+Let us have two functions: `J[R1, A]` and `J[R2, B]`. Both type parameters are different.
+
+We want to combine *choices*. Choices could have different nature. Hence, distinguishing `A` and `B` is desired. And the combination is literally two objects, so a tuple (`(A, B)`) works well.
+
+And what about the type of "truth values"?   
+Let's imagine we have different `R1` and `R2`. And we need to evaluate `(A, B)` somehow. We ought to interpret that tuple as new type. And we need to judge objects of that type. Whatever we want to calculate, single value is required in the end.
+
+So, pairing of `J[R, A]` and `J[R, B]` leads to a selection `J[R, (A, B)]`.  We had individual `A => R` and `B => R`, but to judge pair we'll need `(A, B) => R`.
+
+Finalized signature is following:
 ```scala
 def pair[R, A, B]: J[R, A] => J[R, B] => J[R, (A, B)]
 ```
