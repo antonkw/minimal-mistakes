@@ -322,7 +322,9 @@ The function does even more than n² iterations! 757 is the actual counter value
 
 So, solutions are being generated multiple times. We have no "caching" mechanism. We re-generate the same combinations to pick up the best solutions during sequential iterations.
 
-There are some feasible optimisations but I suggest to switch to the completely opposite approach. We can just be as greedy as possible. But we need a lightly different evaluation function to tackle partial solutions.
+There are some feasible optimizations but I suggest switching to the opposite approach.
+
+We can just be as greedy as possible. But we need a slightly different evaluation function to tackle partial solutions.
 
 # Greedy product
 To reduce complexity, we can use a greedy approach.
