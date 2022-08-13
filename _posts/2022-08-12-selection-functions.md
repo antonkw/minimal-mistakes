@@ -136,8 +136,9 @@ def pair[R, A, B]: J[R, A] => J[R, B] => J[R, (A, B)]
 ```
 
 ## Enabling predicates
-It is better to explore a non-obvious usage case to understand `pair` implementation.
-Obviously, the selection function does full iteration over all underlying elements. It applies `X => R` transformation to choose the best available option.
+The selection function does full iteration over all underlying elements.
+It applies `X => R` transformation to choose the best available option.
+
 That means we can tune our evaluation function to search for an exact match. It would cover the demand of the "brute-forcing" selection function. We turn the evaluation function into the strict predicate.
 ```scala
 val bmwPredicateSelection = bmwSelection[Boolean]  
@@ -146,7 +147,8 @@ val matched = bmwPredicateSelection(_.model == "M550i") // BMW(M550i,523,60945)
 We don't need to do much to enable predicates. `Boolean` is a completely valid "truth value" type. Standard ordering makes `true` values larger than `false` ones.
 
 ## Implementation of the pairing function
-Well, it is time to return to the combination.
+Well, it is time to return to the `pair` function itself.
+
 We have separated selections for `A` and `B`. And also evaluation for a tuple of them.
 ```scala
 def pair[R, A, B]: J[R, A] => J[R, B] => J[R, (A, B)] =  
