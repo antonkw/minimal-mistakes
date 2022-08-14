@@ -1,5 +1,5 @@
 ---
-title: "Selection functions is interesting notion with tricky implementation"
+title: "Selection functions are interesting notion with tricky implementation"
 permalink: /scala/selection-functions/
 # header:
 #   image: /assets/images/writerjpg.jpg
