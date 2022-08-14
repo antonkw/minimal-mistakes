@@ -67,9 +67,9 @@ case class BMW(
   
 val bmws =  
   List(  
-    BMW("230i", 255, 38_395),  
-    BMW("330e", 288, 46_295),  
-    BMW("M550i", 523, 60_945)  
+    BMW("230i", 255, 38395),  
+    BMW("330e", 288, 46295),  
+    BMW("M550i", 523, 60945)  
   )
 
 def bmwSelection[Property](
@@ -230,7 +230,7 @@ Now we are closer to useful applications of selection functions.
 The core notion here is representing our problems (like playing games or graph searching) as a series of choices.
 Previously we combined two selections into one. In the same manner, we can transform a sequence of `A`-selections into a single selection that will select the best option from the sequence of potential `A`-objects: `List[J[R, A]] => J[R, List[A]]`.
 
-Pay attention that at this step, we need the function `List[A] => R` that will judge the whole sequence.
+At this step we need the function `List[A] => R` that will judge the whole sequence.
 
 The approach is the same. We just iteratively produce selections with all possible candidates.
 
@@ -345,7 +345,7 @@ def greedyProduct[R, A]: List[J[R, A]] => J[R, List[A]] =
   }
 ```
 
-So, we use the `evalList` function to evaluate the singleton list.
+So, we use the `evalList` function to evaluate the singleton list:
 ```scala
 val candidate: A = 
   eval(
@@ -353,6 +353,7 @@ val candidate: A =
       evalList(candidate :: List())
   )  
 ```
+
 
 After it, we proceed with the rest of the functions.
 
@@ -377,7 +378,7 @@ val result = // List(p, a, s, s, w, o, r, d)
 Please note that greedy algorithms, by their nature, can provide non-optimal solutions.
 
 # Selection monad
-In highly unobvious manner, selection functions form monad.
+Selection functions form monad.
 
 First, let's pack the function into convenient container.
 ```scala
@@ -389,7 +390,7 @@ case class Selection[R, A](e: J[R, A])
 def flip[A, B, C](f: A => B => C)(x: B)(y: A) = f(y)(x)
 ```
 
-Well, `Monad` instance implements chaining of selections with changing type of entities with same `R` type (return type of evaluation functions).
+Well, `Monad` instance implements chaining of selections. We fix `R` type (return type of evaluation functions).
 ```scala
 implicit def makeMonad[R] = new Monad[Selection[R, *]] {  
     override def flatMap[A, B](fa: Selection[R, A])(f: A => Selection[R, B]): Selection[R, B] =  
@@ -417,14 +418,16 @@ def evSelectionWithLimit(limit: USD) =
   )
   
 val evCarSelection: Selection[USD, EvCar] = usdSelectionMonad.flatMap(bmwSelectionByPrice)((bmw: BMW) =>  
-  evSelectionWithLimit(100_000 - bmw.msrp)  
+  evSelectionWithLimit(100000 - bmw.msrp)  
 )
 ```
 
 # Summary
 I attempted to build a short but meaningful introduction to selection functions.
+
 Selection functions are the topic that is being actively researched.
 And research papers can quickly dive into the topic. And they could imply that readers have some related background.
+
 I intended to give practical guidance for the initial steps. I hope it can help to gain acknowledgment and not lose the narrative thread (in those papers).
 
 # Resources
