@@ -1,7 +1,7 @@
 ---
 title: "Iron updates: turning opaque types into value objects"
 permalink: /scala/iron-updates/
-excerpt: "Next Iron release brings very important updates. There will be a tooling to turn opaque types into value objects (like newtype) with optional validation."
+excerpt: "The next Iron release brings very important updates. There will be a tooling to turn opaque types into value objects (like newtype) with optional validation."
 categories:
   - scala
 tags:
