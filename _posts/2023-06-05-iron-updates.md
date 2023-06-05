@@ -18,7 +18,7 @@ classes: wide
 Disclaimer. It is not a full-featured introduction to Iron library.
 
 The note highlights a couple of updates that seem very important to me.
-The updates are not released yet, and even one unassigned "first good issue" ticket could be a good thing to tackle for somebody.
+The updates are not released yet, and there is even one unassigned "first good issue" ticket. It could be a good thing to tackle for somebody.
 
 
 # Status quo
