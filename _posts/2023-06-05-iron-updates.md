@@ -13,10 +13,9 @@ tags:
 classes: wide
 ---
 
-<img alt="iron" src="/assets/images/logo_iron.png" width="300px">
-Disclaimer.
+<img alt="iron" src="/assets/images/logo_iron.png" width="400px">
 
-It is not a full-featured introduction to Iron library.
+Disclaimer. It is not a full-featured introduction to Iron library.
 
 The note highlights a couple of updates that seem very important to me.
 The updates are not released yet, and even one unassigned "first good issue" ticket could be a good thing to tackle for somebody.
