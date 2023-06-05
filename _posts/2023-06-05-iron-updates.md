@@ -31,8 +31,9 @@ The context for the note is co-allocations of the facts:
   ```
 - `opaque` types were introduced. Initially, they were perceived (by some people, including me) as built-in tooling to have a native mechanism for Value Objects (in DDD terms). In practice, additional manipulations are required; opaque types are not equivalent to newtypes. Specifically, extra tricks are needed to enable standard `apply` and `value` functions. [trading/Newtype.scala](https://github.com/gvolpe/trading/blob/main/modules/domain/shared/src/main/scala/trading/Newtype.scala) is an example of how to turn on value objects back.
 
-In case you aspire to acquire a richer understanding of the prior status quo and problems, I recommend reading the discussion: [Improve opaque types (scala-lang.org)](https://contributors.scala-lang.org/t/improve-opaque-types/4786/43)
+In case you aspire to acquire a richer understanding of the prior status quo and problems, I recommend reading the discussion: [Improve opaque types (scala-lang.org)](https://contributors.scala-lang.org/t/improve-opaque-types/4786/43).
 [Gabriel Volpe](https://twitter.com/volpegabriel87) triggered `newtype`-specific discussion.
+
 And more detailed motivation can be found in the original [SIP-35 - OPAQUE TYPES](https://docs.scala-lang.org/sips/opaque-types.html).
 
 # Iron
@@ -82,9 +83,9 @@ val t2 = Temperature.fromIronType(y)
 `Double :| Greater[10]` is not of the same type but it is positive and could be used to create a `Temperature` without explicit validation.
 
 ### implementation insights
-[Raphaël Fromentin](https://github.com/Iltotore) nudged me to use [Match Types](https://dotty.epfl.ch/docs/reference/new-types/match-types.html).
+I undertook the feature and [Raphaël Fromentin](https://github.com/Iltotore) nudged me to use [Match Types](https://dotty.epfl.ch/docs/reference/new-types/match-types.html).
 
-So, `RefinedTypeOps[T]` has a single parameter and looks for existing `IronType` without explicitly mentioning parameters for `IronType` itself! Very neat, and no macros are required.
+`RefinedTypeOps[T]` has a single parameter and looks for existing `IronType` without explicitly mentioning parameters for `IronType` itself! Very neat, and no macros are required.
 ```scala
 type RefinedTypeOps[T] = T match
   case IronType[a, c] => RefinedTypeOpsImpl[a, c, T]
@@ -99,7 +100,8 @@ class RefinedTypeOpsImpl[A, C, T]:
 ```
 
 ### `value`!
-Reminder, `Temperature` is opaque type. So, by default, you can't access the underlying value. So, you know that there is a `Double` inside, but you have no access.
+Reminder, `Temperature` is opaque type. By default, you can't access the underlying value. So, you know that there is a `Double` inside, but you have no access.
+`value` function is here to help!
 ```scala
 val t1 = Temperature(100)
 val t2 = Temperature(100)
@@ -135,4 +137,4 @@ And `NewType` simply explicitly says "no validation here, just value object"
 
 I suggest jumping into [iron/Issue#125: Add alias for True constraint and IronType[A, True]](https://github.com/Iltotore/iron/issues/125) to share thoughts or implement it!
 
-Thank you for reading!Thank you for reading!
+Thank you for reading!
